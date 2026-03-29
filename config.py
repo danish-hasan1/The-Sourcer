@@ -1,12 +1,11 @@
 import os
+import streamlit as st
 
 # ---------------------------------------------------------------------------
 # Groq
 # ---------------------------------------------------------------------------
-# Set GROQ_API_KEY in your environment:
-#   export GROQ_API_KEY="gsk_..."
-# Or create a .env file and load it with python-dotenv (see app.py).
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+# Load GROQ_API_KEY from streamlit secrets or environment:
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
 GROQ_MODEL   = "llama-3.3-70b-versatile"
 GROQ_TEMP    = 0.2          # low temperature → consistent structured output
 GROQ_MAX_TOKENS = 4096
