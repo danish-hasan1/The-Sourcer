@@ -8,6 +8,14 @@ from typing import Optional
 
 BRAND_CSS = """
 <style>
+/* suppress Streamlit auto nav */
+[data-testid="stSidebarNavItems"]     { display: none !important; }
+[data-testid="stSidebarNavSeparator"] { display: none !important; }
+[data-testid="stSidebarNavLink"]      { display: none !important; }
+#MainMenu  { visibility: hidden !important; }
+footer     { visibility: hidden !important; }
+header     { visibility: hidden !important; }
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 /* ── Root variables ──────────────────────────────── */
@@ -299,5 +307,71 @@ def empty_state(icon: str, title: str, subtitle: str = ""):
         <div style="font-size:3rem; margin-bottom:1rem;">{icon}</div>
         <div style="font-size:1.1rem; font-weight:600; color: #CBD5E1;">{title}</div>
         {"<div style='font-size:0.85rem; margin-top:0.5rem;'>" + subtitle + "</div>" if subtitle else ""}
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# ── Auth page helper ───────────────────────────────────────────────────────────
+AUTH_HIDE_CSS = """
+<style>
+/* Hide Streamlit sidebar completely on auth/landing pages */
+[data-testid="stSidebar"]       { display: none !important; }
+[data-testid="collapsedControl"] { display: none !important; }
+#MainMenu  { visibility: hidden !important; }
+footer     { visibility: hidden !important; }
+header     { visibility: hidden !important; }
+
+/* Auth card styling */
+.auth-card {
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    max-width: 440px;
+    margin: 0 auto;
+}
+.auth-brand {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.auth-brand-name {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #14B8A6;
+    letter-spacing: -0.03em;
+}
+.auth-brand-name span { color: #F59E0B; }
+.auth-brand-sub {
+    font-size: 0.68rem;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 3px;
+}
+.auth-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #F1F5F9;
+    margin-bottom: 4px;
+}
+.auth-subtitle {
+    color: #475569;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+</style>
+"""
+
+def hide_sidebar_on_auth():
+    """Call on Login, Signup, and Landing pages to hide the sidebar."""
+    st.markdown(AUTH_HIDE_CSS, unsafe_allow_html=True)
+
+
+def auth_brand():
+    """Render the brand logo for auth pages."""
+    st.markdown("""
+    <div class="auth-brand">
+        <div class="auth-brand-name">The<span>Sourcer</span></div>
+        <div class="auth-brand-sub">AI Talent Intelligence</div>
     </div>
     """, unsafe_allow_html=True)
