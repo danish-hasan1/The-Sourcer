@@ -35,8 +35,9 @@ st.markdown("""
 # ── Check API keys ─────────────────────────────────────────────────────────────
 anthropic_key = get_anthropic_key()
 google_keys = get_google_keys()
-if not anthropic_key:
-    st.error("🔑 **Anthropic API key required.** Go to Settings to add it.")
+from config import GROQ_API_KEY
+if not anthropic_key and not GROQ_API_KEY:
+    st.error("🔑 **AI API key required.** Go to Settings to add an Anthropic or Groq key.")
     if st.button("⚙️ Go to Settings"):
         st.switch_page("pages/09_Settings.py")
     st.stop()
@@ -115,7 +116,13 @@ if analyse_btn and jd_text.strip():
     st.session_state.current_jd_text = jd_text
     st.session_state.sourcing_results = None
 
-    results = run_full_jd_pipeline(anthropic_key, jd_text, location_hint)
+    with st.spinner("AI is thinking..."):
+        # Pass the key; the engine will prioritize Groq if configured
+        results = run_full_jd_pipeline(
+            anthropic_key, 
+            jd_text, 
+            location_hint=location_hint
+        )
 
     if results:
         st.session_state.ai_results = results

@@ -168,9 +168,15 @@ def reset_password(email: str) -> Dict:
 
 
 def get_anthropic_key() -> Optional[str]:
-    """Get the user's Anthropic API key from session."""
+    """Get the user's Anthropic API key from session or secrets."""
     keys = st.session_state.get("api_keys") or {}
     return keys.get("anthropic_key") or st.secrets.get("ANTHROPIC_KEY_DEFAULT", None)
+
+
+def get_groq_key() -> Optional[str]:
+    """Get the Groq API key from secrets."""
+    from config import GROQ_API_KEY
+    return GROQ_API_KEY
 
 
 def get_google_keys() -> Dict:

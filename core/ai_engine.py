@@ -7,18 +7,45 @@ import anthropic
 import json
 import streamlit as st
 from typing import Dict, Optional
+from groq import Groq
+from config import GROQ_API_KEY, GROQ_MODEL, GROQ_TEMP, GROQ_MAX_TOKENS
 
-
-def _get_client(api_key: str) -> anthropic.Anthropic:
+def _get_anthropic_client(api_key: str) -> anthropic.Anthropic:
     return anthropic.Anthropic(api_key=api_key)
 
+def _get_groq_client() -> Groq:
+    return Groq(api_key=GROQ_API_KEY)
 
-def _call_claude(api_key: str, system_prompt: str, user_content: str, max_tokens: int = 4096) -> Optional[str]:
-    """Core Claude API call with error handling."""
+def _call_ai(api_key: str, system_prompt: str, user_content: str, max_tokens: int = 4096) -> Optional[str]:
+    """Core AI API call with error handling, supporting both Groq and Anthropic."""
+    # Prioritize Groq if key is available
+    if GROQ_API_KEY:
+        try:
+            client = _get_groq_client()
+            chat_completion = client.chat.completions.create(
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_content}
+                ],
+                model=GROQ_MODEL,
+                temperature=GROQ_TEMP,
+                max_tokens=GROQ_MAX_TOKENS,
+            )
+            return chat_completion.choices[0].message.content
+        except Exception as e:
+            st.error(f"Groq engine error: {str(e)}")
+            # Fallback to Anthropic if provided
+            if not api_key:
+                return None
+            
+    if not api_key:
+        st.error("❌ No AI API key provided. Please check your settings.")
+        return None
+
     try:
-        client = _get_client(api_key)
+        client = _get_anthropic_client(api_key)
         message = client.messages.create(
-            model="claude-opus-4-5",
+            model="claude-3-5-sonnet-20240620",
             max_tokens=max_tokens,
             system=system_prompt,
             messages=[{"role": "user", "content": user_content}]
@@ -27,12 +54,13 @@ def _call_claude(api_key: str, system_prompt: str, user_content: str, max_tokens
     except anthropic.AuthenticationError:
         st.error("❌ Invalid Anthropic API key. Please update it in Settings.")
         return None
-    except anthropic.RateLimitError:
-        st.error("⚠️ API rate limit reached. Please wait a moment and try again.")
-        return None
     except Exception as e:
-        st.error(f"AI engine error: {str(e)}")
+        st.error(f"Anthropic engine error: {str(e)}")
         return None
+
+def _call_claude(api_key: str, system_prompt: str, user_content: str, max_tokens: int = 4096) -> Optional[str]:
+    """Main call function that routes to the appropriate AI service."""
+    return _call_ai(api_key, system_prompt, user_content, max_tokens)
 
 
 # ─────────────────────────────────────────────────────────────────

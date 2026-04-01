@@ -46,8 +46,15 @@ with tab1:
     """, unsafe_allow_html=True)
 
     with st.form("api_keys_form"):
-        st.markdown("#### 🤖 Anthropic (Required for AI Analysis)")
-        st.markdown('<div style="color:#64748B; font-size:0.8rem; margin-bottom:8px;">Powers JD analysis, skill matrix, search parameters, outreach generation, and candidate scoring.</div>', unsafe_allow_html=True)
+        st.markdown("#### 🤖 AI Engine (Required for JD Analysis)")
+        st.markdown('<div style="color:#64748B; font-size:0.8rem; margin-bottom:8px;">Powers JD analysis, skill matrix, search parameters, outreach generation, and candidate scoring. You can use either Groq (faster) or Anthropic.</div>', unsafe_allow_html=True)
+        
+        from config import GROQ_API_KEY
+        if GROQ_API_KEY:
+            st.success("✅ **Groq API Key** is set in system secrets.")
+        else:
+            st.info("💡 **Groq API Key** not found in system secrets. Using Anthropic if provided.")
+
         anthropic_key = st.text_input(
             "Anthropic API Key",
             value=api_keys.get("anthropic_key", "") or "",
