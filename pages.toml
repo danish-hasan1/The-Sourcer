@@ -1,0 +1,69 @@
+[[pages]]
+path = "app.py"
+title = "Home"
+icon = "🎯"
+
+[[pages]]
+path = "pages/00_Confirm_Email.py"
+title = "Confirm Email"
+icon = "✅"
+
+[[pages]]
+path = "pages/01_Login.py"
+title = "Login"
+icon = "🔐"
+
+[[pages]]
+path = "pages/02_Signup.py"
+title = "Signup"
+icon = "📝"
+
+[[pages]]
+path = "pages/03_Dashboard.py"
+title = "Dashboard"
+icon = "🏠"
+
+[[pages]]
+path = "pages/04_New_Search.py"
+title = "New Search"
+icon = "🔍"
+
+[[pages]]
+path = "pages/05_Search_Results.py"
+title = "Results"
+icon = "📋"
+
+[[pages]]
+path = "pages/06_Candidate_Database.py"
+title = "Candidates"
+icon = "👥"
+
+[[pages]]
+path = "pages/07_Saved_Searches.py"
+title = "Saved Searches"
+icon = "🗂️"
+
+[[pages]]
+path = "pages/08_Outreach.py"
+title = "Outreach"
+icon = "✉️"
+
+[[pages]]
+path = "pages/09_Settings.py"
+title = "Settings"
+icon = "⚙️"
+
+[[pages]]
+path = "pages/10_Admin.py"
+title = "Admin"
+icon = "🛡️"
+
+[[pages]]
+path = "pages/11_Boolean_Builder.py"
+title = "Boolean Builder"
+icon = "🔤"
+
+[[pages]]
+path = "pages/12_Candidate_Profile.py"
+title = "Profile"
+icon = "👤"
